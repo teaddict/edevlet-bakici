@@ -1,0 +1,33 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `yonet`$$
+
+CREATE PROCEDURE `yonet`(
+in p_tc_no char(11), out p_sure_id int,out p_il varchar(40),out p_ilce varchar(40),out p_mah varchar(50),out p_email nvarchar(50),
+out  p_cep_tel_no varchar(20), out p_ev_tel_no varchar(20), out p_is_visible tinyint(1))
+begin
+
+DECLARE sabika int;
+DECLARE rapor int;
+declare b_id int;
+
+SELECT id INTO b_id FROM bakici WHERE tc_no = p_tc_no;
+
+SELECT sure_id INTO p_sure_id FROM bakici WHERE tc_no = p_tc_no;
+
+SELECT il,ilce,mah INTO p_il,p_ilce,p_mah FROM calismak_istenilen WHERE bakici_id = b_id;
+
+SELECT email,cep_tel,ev_tel,is_visible INTO p_email,p_cep_tel,p_ev_tel,p_is_visible FROM iletisim WHERE bakici_id = b_id;
+
+END$$
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+

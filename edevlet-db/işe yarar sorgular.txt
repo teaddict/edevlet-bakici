@@ -1,0 +1,29 @@
+SELECT * FROM table WHERE (id % 2) = 0; # even
+SELECT * FROM table WHERE (id % 2) > 0; # odd
+
+convert(value,unsigned)
+
+SELECT * 
+FROM rijder 
+WHERE geboortedatum BETWEEN 
+    CURDATE() - INTERVAL 21 YEAR AND 
+    CURDATE() - INTERVAL 18 YEAR
+
+SELECT * 
+FROM (
+SELECT * 
+FROM vatandas_kimlik
+WHERE dogum_tarihi
+BETWEEN CURDATE( ) - INTERVAL 30 YEAR
+AND CURDATE( ) - INTERVAL 18 YEAR
+) AS v
+INNER JOIN egitim e ON v.tc_no = e.tc_no
+AND e.duzey =  "Lise"
+INNER JOIN bakici b ON v.tc_no = b.tc_no
+AND b.sure_id =1
+INNER JOIN calismak_istenilen c ON b.id = c.bakici_id
+AND c.il =  "Eskişehir"
+AND c.ilce =  "Odunpazarı"
+AND c.mah =  "Büyükdere"
+INNER JOIN sgk s ON v.tc_no = s.tc_no
+ORDER BY ad

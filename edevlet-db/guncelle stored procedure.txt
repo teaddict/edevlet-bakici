@@ -1,0 +1,31 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `guncelle`$$
+
+CREATE PROCEDURE `guncelle`(
+in p_tc_no char(11), in p_sure_id int,in p_is_active tinyint(1),in p_il varchar(40),in p_ilce varchar(40),in p_mah varchar(50),in p_email nvarchar(50),
+in  p_cep_tel_no varchar(20), in p_ev_tel_no varchar(20), in p_is_visible tinyint(1),out result int)
+begin
+
+declare b_id int;
+
+SELECT id INTO b_id FROM bakici WHERE tc_no = p_tc_no;
+
+UPDATE bakici SET sure_id=p_sure_id,is_active=p_is_active WHERE tc_no = p_tc_no;
+
+UPDATE calismak_istenilen SET il=p_il,ilce=p_ilce,mahalle=p_mah WHERE bakici_id = b_id;
+
+UPDATE iletisim SET email=p_email,cep_tel_no=p_cep_tel,ev_tel_no=p_ev_tel,is_visible=p_is_visible WHERE bakici_id = b_id;
+
+END$$
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+

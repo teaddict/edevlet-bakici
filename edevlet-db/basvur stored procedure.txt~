@@ -1,0 +1,47 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `basvur`$$
+
+CREATE PROCEDURE `basvur`(
+in p_tc_no char(11), in p_sure_id int,in p_il varchar(40),in p_ilce varchar(40),in p_mah varchar(50),in p_email nvarchar(50),
+in  p_cep_tel_no varchar(20), in p_ev_tel_no varchar(20), in p_is_visible tinyint(1), out result int)
+begin
+
+DECLARE sabika int;
+DECLARE rapor int;
+DECLARE n_bakici_id int;
+
+SELECT COUNT(*) INTO sabika FROM sabika_kaydi WHERE tc_no = p_tc_no;
+
+
+SELECT COUNT(*)  INTO rapor 
+FROM durum_bildirir_raporu
+WHERE tc_no = p_tc_no AND tarih > (NOW() - INTERVAL 6 MONTH) AND (durum = 'uygun' OR durum='UYGUN') AND (verilme_sebebi LIKE  '%Bakıcı%'
+OR verilme_sebebi LIKE  '%bakıcı%') ;
+
+
+IF (sabika > 0 OR rapor < 1 ) THEN
+SET result = 0;
+
+ELSE
+
+INSERT INTO bakici (tc_no, begin,end,sure_id) 
+VALUES (p_tc_no, NOW() ,ADDDATE(NOW(), INTERVAL 6 MONTH),p_sure_id);
+    
+SELECT id INTO n_bakici_id 
+FROM bakici where tc_no = p_tc_no;
+
+INSERT INTO calismak_istenilen (bakici_id, il, ilce,mah) 
+VALUES (n_bakici_id, p_il, p_ilce ,p_mah);
+
+INSERT INTO iletisim (bakici_id, email, cep_tel_no,ev_tel_no,is_visible) 
+VALUES (n_bakici_id, p_email, p_cep_tel_no ,p_ev_tel_no,p_is_visible);
+
+SET result = 1;
+
+
+END IF;
+
+END$$
+
+DELIMITER ;

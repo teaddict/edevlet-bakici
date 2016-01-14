@@ -1,0 +1,90 @@
+DROP PROCEDURE `ara`//
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ara`(in p_il varchar(40),in p_ilce varchar(40),in p_mah varchar(50),in p_duzey varchar(20),in p_yas int,in p_yastwo int,in p_cinsiyet int,in p_tecrube int,in p_din varchar(40),in p_sure int,in p_cocuk int)
+begin
+
+IF (p_duzey='Farketmez' AND p_din='Farketmez') THEN
+
+select v.tc_no,v.seri_no,v.ad,v.soyad,v.din,v.medeni_hali,e.duzey,COUNT(s.id) as tecrube,COUNT(ck.id) as cocuk,a.il as y_il,a.ilce as y_ilce,c.il as c_il,c.ilce as c_ilce,i.email,i.cep_tel_no,i.ev_tel_no 
+from (
+SELECT * 
+FROM vatandas_kimlik
+WHERE dogum_tarihi
+BETWEEN CURDATE( ) - INTERVAL p_yastwo YEAR
+AND CURDATE( ) - INTERVAL p_yas YEAR
+) AS v
+inner join egitim e  on v.tc_no=e.tc_no
+inner join adres a on v.tc_no = a.tc_no
+inner join bakici b on v.tc_no=b.tc_no  and b.sure_id=p_sure and b.is_active=1
+inner join calismak_istenilen c on b.id=c.bakici_id and c.il=p_il and c.ilce=p_ilce and c.mah=p_mah
+left join sgk s on v.tc_no = s.tc_no
+left join cocuk ck on v.tc_no = ck.tc_no
+left join iletisim i on b.id=i.bakici_id and i.is_visible=1
+GROUP BY ad
+order by ad;
+
+ELSEIF ( p_duzey!='Farketmez' AND p_din='Farketmez') THEN
+
+select v.tc_no,v.seri_no,v.ad,v.soyad,v.din,v.medeni_hali,e.duzey,COUNT(s.id) as tecrube,COUNT(ck.id) as cocuk,a.il as y_il,a.ilce as y_ilce,c.il as c_il,c.ilce as c_ilce,i.email,i.cep_tel_no,i.ev_tel_no 
+from (
+SELECT * 
+FROM vatandas_kimlik
+WHERE dogum_tarihi
+BETWEEN CURDATE( ) - INTERVAL p_yastwo YEAR
+AND CURDATE( ) - INTERVAL p_yas YEAR
+) AS v
+inner join egitim e  on v.tc_no=e.tc_no and e.duzey=p_duzey
+inner join adres a on v.tc_no = a.tc_no
+inner join bakici b on v.tc_no=b.tc_no  and b.sure_id=p_sure and b.is_active=1
+inner join calismak_istenilen c on b.id=c.bakici_id and c.il=p_il and c.ilce=p_ilce and c.mah=p_mah
+left join sgk s on v.tc_no = s.tc_no
+left join cocuk ck on v.tc_no = ck.tc_no
+left join iletisim i on b.id=i.bakici_id and i.is_visible=1
+GROUP BY ad
+order by ad;
+
+ELSEIF ( p_duzey='Farketmez' AND p_din!='Farketmez') THEN
+
+select v.tc_no,v.seri_no,v.ad,v.soyad,v.din,v.medeni_hali,e.duzey,COUNT(s.id) as tecrube,COUNT(ck.id) as cocuk,a.il as y_il,a.ilce as y_ilce,c.il as c_il,c.ilce as c_ilce,i.email,i.cep_tel_no,i.ev_tel_no 
+from (
+SELECT * 
+FROM vatandas_kimlik
+WHERE dogum_tarihi
+BETWEEN CURDATE( ) - INTERVAL p_yastwo YEAR
+AND CURDATE( ) - INTERVAL p_yas YEAR
+AND din=p_din
+) AS v
+inner join egitim e  on v.tc_no=e.tc_no
+inner join bakici b on v.tc_no=b.tc_no  and b.sure_id=p_sure and b.is_active=1
+inner join adres a on v.tc_no = a.tc_no
+inner join calismak_istenilen c on b.id=c.bakici_id and c.il=p_il and c.ilce=p_ilce and c.mah=p_mah
+left join sgk s on v.tc_no = s.tc_no
+left join cocuk ck on v.tc_no = ck.tc_no
+left join iletisim i on b.id=i.bakici_id and i.is_visible=1
+GROUP BY ad
+order by ad;
+
+ELSE
+
+select v.tc_no,v.seri_no,v.ad,v.soyad,v.din,v.medeni_hali,e.duzey,COUNT(s.id) as tecrube,COUNT(ck.id) as cocuk,a.il as y_il,a.ilce as y_ilce,c.il as c_il,c.ilce as c_ilce,i.email,i.cep_tel_no,i.ev_tel_no 
+from (
+SELECT * 
+FROM vatandas_kimlik
+WHERE dogum_tarihi
+BETWEEN CURDATE( ) - INTERVAL p_yastwo YEAR
+AND CURDATE( ) - INTERVAL p_yas YEAR
+AND din=p_din
+) AS v
+inner join egitim e  on v.tc_no=e.tc_no and e.duzey=p_duzey
+inner join adres a on v.tc_no = a.tc_no
+inner join bakici b on v.tc_no=b.tc_no  and b.sure_id=p_sure and b.is_active=1
+inner join calismak_istenilen c on b.id=c.bakici_id and c.il=p_il and c.ilce=p_ilce and c.mah=p_mah
+left join sgk s on v.tc_no = s.tc_no
+left join cocuk ck on v.tc_no = ck.tc_no
+left join iletisim i on b.id=i.bakici_id and i.is_visible=1
+GROUP BY ad
+order by ad;
+
+END IF;
+
+END
+

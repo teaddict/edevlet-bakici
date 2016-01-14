@@ -1,0 +1,19 @@
+DROP PROCEDURE `mesaj_yolla`//
+CREATE DEFINER=`root`@`localhost` PROCEDURE `mesaj_yolla`(
+email varchar(50),cep_tel_no	varchar(20),ev_tel_no varchar(20),ad varchar(40),soyad varchar(40)
+)
+BEGIN
+ DECLARE cmd CHAR(255);
+ DECLARE result CHAR(255);
+ SET cmd = CONCAT('curl https://pubsub.pubnub.com/publish/demo/demo/0/mysql_triggers/0/%22',ad, ',' ,soyad, ',' ,email, ',' ,cep_tel_no, ',' ,ev_tel_no,'%22');
+ SET result = sys_eval(cmd);
+END
+
+
+
+TRIGGERLARI LİSTELE
+
+SHOW TRIGGERS
+
+MYSQL DE TRIGGERLAR MODIFY OLMUYOR. 
+DROP TRIGGER AND THAN CREATE AGAIN

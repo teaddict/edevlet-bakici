@@ -1,0 +1,22 @@
+<?php
+include('session.php');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>HOŞGELDİNİZ</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="profile">
+<b id="welcome">Merhaba : <i><?php echo $login_session; ?></i> <?php echo date("d/m/Y G:i:s"),time(); ?></b>
+<br><br>
+<b id="menu">
+<a href="basvur.php">BAKICI OLMAK İÇİN BAŞVUR</a>
+<br>
+<br><a href="ara.php">BAKICI ARA</a></b>
+<b id="logout"><a href="logout.php">Log Out</a></b>
+</div>
+</body>
+</html>

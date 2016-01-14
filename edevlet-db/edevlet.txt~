@@ -1,0 +1,174 @@
+CREATE DATABASE edevlet
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+
+create table vatandas_kimlik(
+id int not null AUTO_INCREMENT,
+tc_no char(11) not null,
+seri_no char(9) not null,
+ad varchar(40) not null,
+soyad varchar(40)not null,
+anne_adi varchar(40) not null,
+baba_adi varchar(40) not null,
+medeni_hali varchar(20) not null,
+din varchar(40) not null,
+dogum_tarihi datetime not null,
+pass varchar(40) not null,
+primary key(id,tc_no,seri_no ),
+index(tc_no) ) CHARACTER SET latin5 COLLATE latin5_turkish_ci
+
+
+create table adres(
+id int not null AUTO_INCREMENT,
+tc_no char(11) not null,
+il varchar(40),
+ilce varchar(40),
+mah varchar(50),
+sokak varchar(50),
+cadde varchar(60),
+no int,
+posta_kodu char(5),
+primary key(id,tc_no) ,
+FOREIGN KEY (tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci
+
+      
+create table cocuk(
+id int not null AUTO_INCREMENT,
+tc_no char(11) not null,
+primary key(id,tc_no) ,
+FOREIGN KEY (tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci
+      
+
+create table egitim(
+id int not null AUTO_INCREMENT,
+tc_no char(11) not null,
+okul_ad varchar(50),
+duzey varchar(20),
+baslangic date,
+bitis date,
+primary key(id,tc_no) ,
+FOREIGN KEY (tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci      
+
+
+
+create table sgk(
+id int not null AUTO_INCREMENT,
+tc_no char(11) not null,
+isyeri_no char(11) not null,
+kategori varchar(20),
+baslangic date,
+bitis date,
+primary key(id,tc_no,isyeri_no) ,
+FOREIGN KEY (tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+      
+      
+      
+create table sabika_kaydi(
+id int not null AUTO_INCREMENT,
+tc_no char(11) not null,
+tür varchar(20),
+tarih date,
+primary key(id,tc_no) ,
+FOREIGN KEY (tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+      
+      
+
+create table durum_bildirir_raporu(
+id int not null AUTO_INCREMENT,
+tc_no char(11) not null,
+tani varchar(50), 
+tarih date,
+alinan_yer varchar(60),
+primary key(id,tc_no) ,
+FOREIGN KEY (tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+      
+      
+      
+      
+
+create table bakici(
+id int not null AUTO_INCREMENT,
+sure_id int not null,
+tc_no char(11) not null,
+is_active tinyint(1) default '1' not null,
+begin date,
+end date,
+primary key(id,tc_no) ,
+FOREIGN KEY (tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE,
+FOREIGN KEY (sure_id)
+      REFERENCES sure(id)
+      ON UPDATE CASCADE	  ) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+
+
+
+create table sure(
+id int not null AUTO_INCREMENT,
+tanim varchar(15),
+primary key(id,bakici_id)) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+      
+
+create table iletisim(
+id int not null AUTO_INCREMENT,
+bakici_id int not null,
+email varchar(50),
+cep_tel_no varchar(20),
+ev_tel_no varchar(20),
+is_active tinyint(1) default '0' not null,
+primary key(id,bakici_id) ,
+FOREIGN KEY (bakici_id)
+      REFERENCES bakici(id)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+      
+
+create table calismak_istenilen(
+id int not null AUTO_INCREMENT,
+bakici_id int not null,
+il varchar(40),
+ilce varchar(40),
+mah varchar(50),
+primary key(id,bakici_id) ,
+FOREIGN KEY (bakici_id)
+      REFERENCES bakici(id)
+      ON UPDATE CASCADE ) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+
+
+create table tel_no_istek_kayit(
+id int not null AUTO_INCREMENT,
+bakici_id int not null,
+isteyen_tc_no char(11) not null,
+tarih date,
+primary key(id,bakici_id) ,
+FOREIGN KEY (bakici_id)
+      REFERENCES bakici(id)
+      ON UPDATE CASCADE,
+FOREIGN KEY (isteyen_tc_no)
+      REFERENCES vatandas_kimlik(tc_no)
+      ON UPDATE CASCADE) CHARACTER SET latin5 COLLATE latin5_turkish_ci     
+      
+      
+create table mahalle(
+id int not null AUTO_INCREMENT,
+ad varchar(40) not null ,
+il_id int,
+ilce_id int,
+primary key(id,il_id,ilce_id),
+FOREIGN KEY (il_id)
+      REFERENCES il(id)
+      ON UPDATE CASCADE,
+FOREIGN KEY (ilce_id)
+      REFERENCES ilce(id)
+      ON UPDATE CASCADE) CHARACTER SET latin5 COLLATE latin5_turkish_ci

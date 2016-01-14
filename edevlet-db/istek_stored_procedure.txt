@@ -1,0 +1,29 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `istek`$$
+
+CREATE PROCEDURE `istek`(in b_tc_no char(11),in i_tc_no char(11), in  i_cep_tel_no varchar(20), out result int)
+begin
+
+declare b_id int;
+
+select id into b_id from bakici where tc_no=b_tc_no;
+
+INSERT INTO `tel_no_istek_kayit`(`bakici_id`, `isteyen_tc_no`, `tarih`, `gond_tel_no`) VALUES (b_id,i_tc_no,now(),i_cep_tel_no);
+
+set result=1;
+
+END$$
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+

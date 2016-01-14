@@ -1,0 +1,8 @@
+create view vatandas as
+select * from vatandas_kimlik
+
+
+CREATE VIEW BAKICILISTE
+AS
+SELECT DISTINCT v.tc_no,v.seri_no,v.ad,v.soyad,s.tanim FROM vatandas_kimlik v, bakici b , sure s
+WHERE b.tc_no=v.tc_no and s.id=b.sure_id

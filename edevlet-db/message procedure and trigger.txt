@@ -1,0 +1,46 @@
+
+DELIMITER @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `mesaj_yolla`(
+email varchar(50),cep_tel_no	varchar(20),ev_tel_no varchar(20),ad varchar(40),soyad varchar(40),gond_no varchar(20)
+)
+BEGIN
+ DECLARE cmd CHAR(255);
+ DECLARE result CHAR(255);
+ SET cmd = CONCAT('curl https://pubsub.pubnub.com/publish/demo/demo/0/mysql_triggers/0/%22',ad, ',' ,soyad, ',' ,email, ',' ,cep_tel_no, ',' ,ev_tel_no, ',' ,gond_no,'%22');
+ # SET result = sys_exec(cmd);
+END;
+@@
+
+
+
+TRIGGERLARI LİSTELE
+
+SHOW TRIGGERS
+
+MYSQL DE TRIGGERLAR MODIFY OLMUYOR. 
+DROP TRIGGER AND THAN CREATE AGAIN
+
+
+
+DELIMITER @@
+CREATE TRIGGER push_message_trigger AFTER INSERT ON istek_kayit
+  FOR EACH ROW
+  BEGIN
+DECLARE p_bakici_id integer;
+DECLARE p_gond_no varchar(20);
+DECLARE p_email varchar(50);
+DECLARE p_cep_tel_no varchar(20);
+DECLARE p_ev_tel_no varchar(20);
+DECLARE p_ad varchar(40);
+DECLARE p_soyad varchar(40);
+
+SET p_bakici_id=NEW.bakici_id;
+SET p_gond_no=NEW.gond_tel_no;
+
+SELECT email,cep_tel_no,ev_tel_no into p_email,p_cep_tel_no,p_ev_tel_no from iletisim where bakici_id=p_bakici_id;
+SELECT v.ad,v.soyad into p_ad,p_soyad from vatandas_kimlik v,bakici b where b.id=p_bakici_id and b.tc_no=v.tc_no;
+
+CALL mesaj_yolla(p_email,p_cep_tel_no,p_ev_tel_no,p_ad,p_soyad,p_gond_no);
+
+END;
+@@

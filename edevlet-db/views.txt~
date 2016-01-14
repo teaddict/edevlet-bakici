@@ -1,0 +1,5 @@
+create view vatandas as
+select * from vatandas_kimlik
+
+
+

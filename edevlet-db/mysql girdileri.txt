@@ -1,0 +1,31 @@
+INSERT INTO `vatandas_kimlik`(`tc_no`, `seri_no`, `ad`, `soyad`, `anne_adi`, `baba_adi`, `medeni_hali`, `din`, `pass`, `is_superuser`) VALUES ('40227652319','Y11908764','Fatma','Kara','Ayşe','Hakan','Evli','İslam','123456',0)
+
+
+UPDATE vatandas_kimlik SET dogum_tarihi = 19851101132300 WHERE tc_no = '40227652319'
+
+UPDATE vatandas_kimlik SET dogum_tarihi = 19801101132300 WHERE tc_no = '40223165177'
+
+ADRESLER
+INSERT INTO `edevlet`.`adres` (`id`, `tc_no`, `il`, `ilce`, `mah`, `sokak`, `cadde`, `no`, `posta_kodu`) VALUES (NULL, '40223165177', 'Eskişehir', 'Odunpazarı', 'Büyükdere', 'Okumuş', NULL, '34', '26040');
+
+INSERT INTO `edevlet`.`adres` (`id`, `tc_no`, `il`, `ilce`, `mah`, `sokak`, `cadde`, `no`, `posta_kodu`) VALUES (NULL, '40227652319', 'Eskişehir', 'Tepebaşı', 'Şirintepe', 'Ali Cengiz', NULL, '24', '26039');
+
+INSERT INTO `edevlet`.`adres` (`id`, `tc_no`, `il`, `ilce`, `mah`, `sokak`, `cadde`, `no`, `posta_kodu`) VALUES (NULL, '40337652341', 'Eskişehir', 'Sivrihisar', 'Nizami Çelik', '12231', NULL, '22', '26040');
+
+ÇOCUK SAYISI
+SELECT COUNT(*) FROM `cocuk` WHERE tc='';
+
+SAĞLIK RAPORU
+
+INSERT INTO `edevlet`.`durum_bildirir_raporu` (`tc_no`, `durum`, `tarih`, `alinan_yer`, `verilme_sebebi`) VALUES ('40223165177', 'uygun', now(), 'OSMANGAZİ ÜNİVERSİTESİ TIP ','Bakıcılık Başvurusu');
+
+Eğitim
+INSERT INTO `edevlet`.`egitim` (`id`, `tc_no`, `okul_ad`, `duzey`, `baslangic`, `bitis`) VALUES (NULL, '40227652319', 'Yunus Emre Mesleki ve Teknik Anadolu Lisesi', 'Lise', '1984-09-18', '2000-06-16');
+
+INSERT INTO `edevlet`.`egitim` (`tc_no`, `okul_ad`, `duzey`, `baslangic`, `bitis`) VALUES ('40337652341', 'Anadolu Üniversitesi Çocuk Gelişimi', 'Üniversite', '2009-09-18', '2013-06-16');
+
+call basvur('40227652319',1,'Eskişehir','Odunpazarı','Büyükdere','f@gmail.com','05547658787','02229878786',1,@result)
+
+
+SSABIKA KAYDI 
+INSERT INTO `sabika_kaydi`(`tc_no`, `tür`, `tarih`) VALUES ('40223165177','Hırsızlık',now())
